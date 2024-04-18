@@ -1,0 +1,82 @@
+@mixin backlight($x, $y, $spread, $size, $colorA, $colorB, $duration) {
+  &:after {
+      position: absolute;
+      content: "";
+      top: $y;
+      left: $x;
+      right: 0;
+      z-index: -1;
+      height: 100%;
+      width: 100%;
+      margin: 0 auto;
+      transform: scale($size);
+      -webkit-filter: blur($spread);
+      -moz-filter: blur($spread);
+      -ms-filter: blur($spread);
+      filter: blur($spread);
+      background: linear-gradient(270deg, $colorA, $colorB);
+      background-size: 200% 200%;
+      animation: animateGlow $duration ease infinite;
+
+      @keyframes animateGlow {
+          0% {
+              background-position: 0% 50%
+          }
+
+          50% {
+              background-position: 100% 50%
+          }
+
+          100% {
+              background-position: 0% 50%
+          }
+      }
+  }
+}
+
+/**
+* Columns
+*
+*/
+@mixin columns( $columns, $grid-gap) {
+
+& > div, & > article {
+  float: left;
+  margin: 0 0 $grid-gap $grid-gap;
+  width: calc((100% / #{$columns}) - (#{$grid-gap}));
+  @include media-breakpoint-down(md) {
+    width: calc((100% / #{2}) - (#{$grid-gap}));
+  }
+  @include media-breakpoint-up(md) {
+    &:nth-of-type(#{$columns}n+1) {
+      clear: both;
+      margin-left: 0;
+    }
+  }
+}
+
+@supports(grid-area: auto) {
+  display: grid;
+  //$grid-gutter-width
+  grid-gap: $grid-gap;
+  grid-template-columns: repeat( $columns, 1fr );
+  & > div, & > article {
+    margin: 0;
+    width: 100%;
+  }
+  @include media-breakpoint-down(lg) {
+    @if ($columns == "3") {
+      grid-template-columns: repeat( 2, 1fr );
+    }
+  }
+  @include media-breakpoint-down(md) {
+    grid-template-columns: repeat( 1, 1fr );
+  }
+}
+}
+
+@for $i from 1 through 12 {
+.layout-grid-#{$i} {
+  @include columns(#{$i},  30px);
+}
+}

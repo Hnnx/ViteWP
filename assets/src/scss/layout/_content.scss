@@ -1,0 +1,28 @@
+// General purpose
+
+body {
+
+  // Prevents user scrolling when active
+  &.noscroll {
+    overflow: hidden;
+    inset: 0;
+    touch-action: none;
+  }
+
+  // Located at body div closing tag
+  // Opens when search bar or mobile menu is active
+  #overlay {
+    opacity: 0;
+    transition: 0.3s;
+
+    &.active {
+      position: fixed;
+      inset: 0;
+      background-color: #000;
+      opacity: 0.7;
+      z-index: 10;
+      overflow: hidden;
+      transition: 0.3s;
+    }
+  }
+}
